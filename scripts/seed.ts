@@ -1,10 +1,12 @@
 import prisma from "@/lib/prisma";
 
 async function main() {
+    const hashedPassword = "$2b$10$gYchWt4JKkHH1khcbVzMy.v2I.E7Or3A62nbuvVTWpQVTNKn3k5Si";
     const user = await prisma.user.create({
         data: {
-            name: "Datový Importér",
-            email: "datovy.importer@pslib.cz",
+            name: "Testovací účet",
+            email: "[EMAIL_ADDRESS]",
+            hashedPassword,
         },
     });
     const article = await prisma.article.create({
