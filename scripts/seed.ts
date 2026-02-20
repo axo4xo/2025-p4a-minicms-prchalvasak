@@ -5,7 +5,7 @@ async function main() {
     const user = await prisma.user.create({
         data: {
             name: "Testovací účet",
-            email: "[EMAIL_ADDRESS]",
+            email: "datovy@tunatours.cz",
             hashedPassword,
         },
     });
