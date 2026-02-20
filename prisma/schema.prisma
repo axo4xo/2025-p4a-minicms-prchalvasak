@@ -5,3 +5,44 @@ datasource db {
 generator client {
   provider        = "prisma-client-js"
 }
+
+model Article {
+    id String @id @default(cuid())
+    title String
+    slug String @unique
+    content String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    publishDate DateTime
+    reviews Review[]
+    categories Category[]
+    authorId String
+    author User @relation(fields: [authorId], references: [id])
+}
+
+model Review {
+    // CSFD vzor - 0-5 hvezdicek + komentar
+    id String @id @default(cuid())
+    rating Int
+    comment String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    articleId String
+    article Article @relation(fields: [articleId], references: [id])
+}
+
+model Category {
+    id String @id @default(cuid())
+    name String
+    articles Article[]
+}
+
+model User {
+    id String @id @default(cuid())
+    name String
+    email String @unique
+    password String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    articles Article[]
+}
