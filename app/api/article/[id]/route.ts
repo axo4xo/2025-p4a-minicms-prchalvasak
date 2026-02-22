@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { getArticle, updateArticle, deleteArticle } from "@/lib/actions/articles";
 
@@ -67,6 +68,9 @@ export async function PUT(
 
         const article = await updateArticle(id, title, content, new Date(publishDate));
 
+        revalidatePath("/");
+        revalidatePath(`/article/${id}`);
+
         return NextResponse.json(article, { status: 200 });
     } catch (error) {
         return NextResponse.json(
@@ -107,6 +111,8 @@ export async function DELETE(
         }
 
         const article = await deleteArticle(id);
+
+        revalidatePath("/");
 
         return NextResponse.json({ id: article.id }, { status: 200 });
     } catch (error) {

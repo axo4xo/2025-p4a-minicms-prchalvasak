@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { createArticle } from "@/lib/actions/articles";
 import prisma from "@/lib/prisma";
@@ -23,6 +24,8 @@ export async function POST(request: Request) {
         }
 
         const article = await createArticle(title, content, new Date(publishDate), session.user.id);
+
+        revalidatePath("/");
 
         return NextResponse.json(article, { status: 201 });
     } catch (error) {

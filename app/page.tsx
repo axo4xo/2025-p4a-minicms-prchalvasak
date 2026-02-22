@@ -1,11 +1,10 @@
-import prisma from "@/lib/prisma";
 import Header from "./components/Header";
 
 export default async function Home() {
-  const articles = await prisma.article.findMany({
-    include: { author: true },
-    orderBy: { createdAt: "desc" },
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/article`, {
+    cache: "no-store",
   });
+  const articles = await res.json();
 
   return (
     <div className="page-wrapper">
